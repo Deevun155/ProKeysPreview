@@ -1,0 +1,41 @@
+# Build artifacts
+
+**/Builds/
+**/build/
+**/DerivedData/
+**/JuceLibraryCode/
+**/x64/
+**/Debug/
+**/Release/
+ProKeysPreview/build-scripts/releases/
+ProKeysPreview/releases/
+
+# Compiled Binaries
+
+*.exe
+*.dll
+*.dylib
+*.so
+*.app
+*.vst3
+*.component
+*.lib
+*.a
+
+# Development Files
+
+*.o
+*.obj
+*.d
+*.pch
+*.gch
+*.opensdf
+*.sdf
+*.log
+
+# IDE Files
+
+**/*.user
+**/*.suo
+.vscode/
+

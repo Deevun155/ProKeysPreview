@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libasound2-dev \
+            libfreetype6-dev \
+            libcurl4-openssl-dev \
+            libx11-dev \
+            libxcomposite-dev \
+            libxcursor-dev \
+            libxext-dev \
+            libxinerama-dev \
+            libxrandr-dev \
+            libxrender-dev \
+            libwebkit2gtk-4.0-dev
+
+      - name: Build Projucer (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          msbuild JUCE\extras\Projucer\Builds\VisualStudio2022\Projucer.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Build Projucer (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          xcodebuild -project JUCE/extras/Projucer/Builds/MacOSX/Projucer.xcodeproj -configuration Release -target Projucer
+
+      - name: Build Projucer (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          make -C JUCE/extras/Projucer/Builds/LinuxMakefile
+
+      - name: Resave project (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          JUCE\extras\Projucer\Builds\VisualStudio2022\x64\Release\App\Projucer.exe --resave ProKeysPreview.jucer
+
+      - name: Resave project (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          ./JUCE/extras/Projucer/Builds/MacOSX/build/Release/Projucer.app/Contents/MacOS/Projucer --resave ProKeysPreview.jucer
+
+      - name: Resave project (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          ./JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ProKeysPreview.jucer
+
+      - name: Build plugin (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          msbuild Builds\VisualStudio2026\ProKeysPreview.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Build plugin (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          xcodebuild -project Builds/MacOSX/ProKeysPreview.xcodeproj -configuration Release -target ProKeysPreview
+
+      - name: Build plugin (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          make -C Builds/LinuxMakefile CONFIG=Release

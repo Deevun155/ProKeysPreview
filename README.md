@@ -1,0 +1,70 @@
+# Pro Keys Preview
+A VST3 visualiser for Rock Band 3 Pro Keys charts. Compatible with REAPER.
+
+## Usage
+- Download and copy the ProKeysPreview.vst3 folder to `C:\Program Files\Common Files\VST3` or wherever REAPER looks for your VST3 files
+- Add the Plugin to the FX for the Expert Pro Keys track
+
+## Build
+This project uses Projucer and JUCE 8.0.12.
+
+1. Initialize the JUCE submodule:
+
+```bash
+git submodule update --init --recursive
+```
+
+2. Open `ProKeysPreview.jucer` in Projucer and save, or run Projucer headless. If you only have JUCE source, build Projucer from `JUCE/extras/Projucer` first.
+
+```bash
+# Windows (PowerShell)
+JUCE\extras\Projucer\Builds\VisualStudio2022\x64\Release\App\Projucer.exe --resave ProKeysPreview.jucer
+
+# macOS
+./JUCE/extras/Projucer/Builds/MacOSX/build/Release/Projucer.app/Contents/MacOS/Projucer --resave ProKeysPreview.jucer
+
+# Linux
+./JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer --resave ProKeysPreview.jucer
+```
+
+3. Build the generated projects:
+
+```bash
+# Windows
+msbuild Builds/VisualStudio2026/ProKeysPreview.sln /p:Configuration=Release /p:Platform=x64
+
+# macOS
+xcodebuild -project Builds/MacOSX/ProKeysPreview.xcodeproj -configuration Release -target ProKeysPreview
+
+# Linux
+make -C Builds/LinuxMakefile CONFIG=Release
+```
+
+REAPER SDK headers are included in `Source/extern` under the original license.
+
+## Settings
+- Difficulty
+    - The plugin assumes it has been placed in the FX window of the Expert difficulty.
+    - When placed here, you can switch to the other tracks using the Difficulty setting, which automatically adjusts track speeds.
+    - Alternatively, you can place the plugin on all the different tracks and use the "This track" difficulty, which won't adjust the track speed.
+- Time Offset (ms)
+    - The plugin will have some latency. It's likely to be different from RBN Preview.
+    - Adjust until playback looks accurate.
+- Refresh Rate (Hz)
+    - This is how often the plugin updates. It is recommended to use the refresh rate of your display.
+- Speed
+    - This is the track speed.
+    - It is designed to be equivalent to Rock Band 3 track speeds.
+
+## Features
+- Range shifts
+    - Upcoming range shift lane dimming
+    - Upcoming range shift chevrons
+    - Smooth range shift animation and lateral highway scrolling
+    - Notes outside the current range highlight in red
+- Glissandos
+    - Alternative sprite
+    - Glissandos that have erroenous notes show those notes highlighted in red
+- Chord detection
+- Sustain logic
+- Beat lines
