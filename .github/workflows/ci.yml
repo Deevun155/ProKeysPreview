@@ -80,13 +80,13 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          msbuild Builds\VisualStudio2026\ProKeysPreview.sln /p:Configuration=Release /p:Platform=x64
+          msbuild Builds\VisualStudio2026\ProKeysPreview.sln /p:Configuration=Release /p:Platform=x64 /p:PlatformToolset=v143
 
       - name: Build plugin (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          xcodebuild -project Builds/MacOSX/ProKeysPreview.xcodeproj -configuration Release -target ProKeysPreview
+          xcodebuild -project Builds/MacOSX/ProKeysPreview.xcodeproj -configuration Release -alltargets
 
       - name: Build plugin (Linux)
         if: runner.os == 'Linux'
