@@ -19,6 +19,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup MSBuild
+        if: runner.os == 'Windows'
+        uses: microsoft/setup-msbuild@v2
+
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
@@ -34,7 +38,7 @@ jobs:
             libxinerama-dev \
             libxrandr-dev \
             libxrender-dev \
-            libwebkit2gtk-4.0-dev
+            libwebkit2gtk-4.1-dev
 
       - name: Build Projucer (Windows)
         if: runner.os == 'Windows'
@@ -46,7 +50,7 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          xcodebuild -project JUCE/extras/Projucer/Builds/MacOSX/Projucer.xcodeproj -configuration Release -target Projucer
+          xcodebuild -project JUCE/extras/Projucer/Builds/MacOSX/Projucer.xcodeproj -configuration Release -alltargets
 
       - name: Build Projucer (Linux)
         if: runner.os == 'Linux'
