@@ -93,3 +93,13 @@ jobs:
         shell: bash
         run: |
           make -C Builds/LinuxMakefile CONFIG=Release
+
+      - name: Upload VST3 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProKeysPreview-${{ runner.os }}-VST3
+          path: |
+            Builds/**/Release/**/*.vst3
+            Builds/**/build/Release/**/*.vst3
+            Builds/**/build/**/*.vst3
+          if-no-files-found: warn
