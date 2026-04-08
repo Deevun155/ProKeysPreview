@@ -46,7 +46,7 @@ REAPER SDK headers are included in `Source/extern` under the original license.
 - Difficulty
     - The plugin assumes it has been placed in the FX window of the Expert difficulty.
     - When placed here, you can switch to the other tracks using the Difficulty setting, which automatically adjusts track speeds.
-    - Alternatively, you can place the plugin on all the different tracks and use the "This track" difficulty, which won't adjust the track speed.
+    - Alternatively, you can place the plugin on all the different tracks and use the `This track` difficulty, which won't adjust the track speed.
 - Time Offset (ms)
     - The plugin will have some latency. It's likely to be different from RBN Preview.
     - Adjust until playback looks accurate.
