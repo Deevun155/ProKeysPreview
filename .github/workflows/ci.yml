@@ -88,11 +88,25 @@ jobs:
         run: |
           msbuild Builds\VisualStudio2026\ProKeysPreview.sln /p:Configuration=Release /p:Platform=x64 /p:PlatformToolset=v143
 
+      - name: Package VST3 (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Compress-Archive -Path Builds\VisualStudio2026\x64\Release\VST3\ProKeysPreview.vst3 -DestinationPath dist\ProKeysPreview-Windows-VST3.zip
+
       - name: Build plugin (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
           xcodebuild -project Builds/MacOSX/ProKeysPreview.xcodeproj -configuration Release -alltargets
+
+      - name: Package VST3 (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent Builds/MacOSX/build/Release/ProKeysPreview.vst3 dist/ProKeysPreview-macOS-VST3.zip
 
       - name: Build plugin (Linux)
         if: runner.os == 'Linux'
@@ -100,12 +114,19 @@ jobs:
         run: |
           make -C Builds/LinuxMakefile CONFIG=Release
 
+      - name: Package VST3 (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          mkdir -p dist
+          zip -r dist/ProKeysPreview-Linux-VST3.zip Builds/LinuxMakefile/build/ProKeysPreview.vst3
+
       - name: Upload VST3 artifact (Windows)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: ProKeysPreview-Windows-VST3
-          path: Builds/VisualStudio2026/x64/Release/VST3
+          path: dist/ProKeysPreview-Windows-VST3.zip
           if-no-files-found: warn
 
       - name: Upload VST3 artifact (macOS)
@@ -113,7 +134,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ProKeysPreview-macOS-VST3
-          path: Builds/MacOSX/build/Release
+          path: dist/ProKeysPreview-macOS-VST3.zip
           if-no-files-found: warn
 
       - name: Upload VST3 artifact (Linux)
@@ -121,7 +142,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ProKeysPreview-Linux-VST3
-          path: Builds/LinuxMakefile/build
+          path: dist/ProKeysPreview-Linux-VST3.zip
           if-no-files-found: warn
 
   release:
