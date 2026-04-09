@@ -1,10 +1,27 @@
 # Pro Keys Preview
 A VST3 visualiser for Rock Band 3 Pro Keys charts. Compatible with REAPER.
 <img width="743" height="556" alt="image" src="https://github.com/user-attachments/assets/0c72fcd2-d869-4e75-942b-5c05710639a9" />
+Windows, Linux and MacOS versions are available. The Linux and MacOS versions haven't been tested, please create an issue if you run into problems.
 
-## Usage
-- Download and copy the ProKeysPreview.vst3 folder to `C:\Program Files\Common Files\VST3` or wherever REAPER looks for your VST3 files
-- Add the Plugin to the FX for the Expert Pro Keys track
+## Installation
+- Download and copy the ProKeysPreview.vst3 folder to wherever REAPER looks for your VST3 files
+    - On Windows, this is likely  `C:\Program Files\Common Files\VST3`
+- Add the Plugin to the FX for track you would like to preview
+
+## Settings
+- Difficulty
+    - The plugin assumes it has been placed in the FX window of the Expert difficulty.
+    - When placed here, you can switch to the other tracks using the Difficulty setting, which automatically adjusts track speeds.
+      - This mimics the functionality of RBN Preview
+    - Alternatively, you can place the plugin on all the different tracks and use the `This track` difficulty, which won't adjust the track speed.
+- Time Offset (ms)
+    - The plugin will have some latency. It's likely to be different from RBN Preview.
+    - Adjust until playback looks accurate.
+- Refresh Rate (Hz)
+    - This is how often the plugin updates. It is recommended to use the refresh rate of your display.
+- Speed
+    - This is the track speed.
+    - It is designed to be equivalent to Rock Band 3 track speeds.
 
 ## Build
 This project uses Projucer and JUCE 8.0.12.
@@ -43,28 +60,6 @@ make -C Builds/LinuxMakefile CONFIG=Release
 
 REAPER SDK headers are included in `Source/extern` under the original license.
 
-## Settings
-- Difficulty
-    - The plugin assumes it has been placed in the FX window of the Expert difficulty.
-    - When placed here, you can switch to the other tracks using the Difficulty setting, which automatically adjusts track speeds.
-    - Alternatively, you can place the plugin on all the different tracks and use the `This track` difficulty, which won't adjust the track speed.
-- Time Offset (ms)
-    - The plugin will have some latency. It's likely to be different from RBN Preview.
-    - Adjust until playback looks accurate.
-- Refresh Rate (Hz)
-    - This is how often the plugin updates. It is recommended to use the refresh rate of your display.
-- Speed
-    - This is the track speed.
-    - It is designed to be equivalent to Rock Band 3 track speeds.
-
-## Features
-- Range shifts
-    - Upcoming range shift lane dimming
-    - Upcoming range shift chevrons
-    - Smooth range shift animation and lateral highway scrolling
-    - Notes outside the current range highlight in red
-- Glissandos
-    - Alternative sprite
     - Glissandos that have erroenous notes show those notes highlighted in red
 - Chord detection
 - Sustain logic
